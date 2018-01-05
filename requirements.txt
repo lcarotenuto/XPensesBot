@@ -1,3 +1,4 @@
 requests
+httplib2
 pycountry
 google-api-python-client

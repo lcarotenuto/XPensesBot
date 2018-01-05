@@ -1,4 +1,4 @@
-import requests
+import json
 import os
 import httplib2
 import pycountry
@@ -12,42 +12,40 @@ from oauth2client.file import Storage
 
 try:
     import argparse
+
     flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
 except ImportError:
     flags = None
 
-SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
-CLIENT_SECRET_FILE = 'res/client_secret.json'
-APPLICATION_NAME = 'Google Sheets API Python Quickstart'
 
 def get_credentials():
     """
     Returns:
         Credentials, the obtained credential.
     """
+    client_secret_path = config['VARS']['CLIENT_SECRET_PATH']
+    scopes = config['VARS']['SCOPES']
+    application_name = config['VARS']['APPLICATION_NAME']
 
     current_dir = os.getcwd()
     credential_dir = os.path.join(current_dir, '.credentials')
     if not os.path.exists(credential_dir):
         os.makedirs(credential_dir)
 
-    credential_path = os.path.join(credential_dir,
-                                   'sheets.googleapis.com-python-quickstart.json')
+    credentials_filename = config['CONSTANTS']['CREDENTIALS_FILENAME']
+    credential_path = os.path.join(credential_dir, credentials_filename)
     store = Storage(credential_path)
     credentials = store.get()
     if not credentials or credentials.invalid:
-        flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
-        flow.user_angent = APPLICATION_NAME
+        flow = client.flow_from_clientsecrets(client_secret_path, scopes)
+        flow.user_agent = application_name
         if flags:
             credentials = tools.run_flow(flow, store)
-        else: # Python 2 compatibility
-            credentials = tools.run(flow, store)
+
         print("Storing credentials {0} to {1}".format(credentials, credential_path))
 
     return credentials
 
-def listener():
-    print("Sono Listener")
 
 def get_date():
     language = pycountry.languages.lookup("it")
@@ -63,10 +61,11 @@ def get_date():
 
     return day, month
 
+
 def main():
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
-    discovery_url = ('https://sheets.googleapis.com/$discovery/rest?version=v4')
+    discovery_url = config['VARS']['DISCOVERY_URL']
     service = discovery.build('sheets', 'v4', http=http, discoveryServiceUrl=discovery_url)
 
     spreadsheet_id = '1UU0fr7jpVrW6d5YQWLOwfYgtim5AN090Tjhfp9lljPs'
@@ -89,4 +88,6 @@ def main():
 
 
 if __name__ == '__main__':
+    with open("config.json", "r") as f:
+        config = json.load(f)
     main()
