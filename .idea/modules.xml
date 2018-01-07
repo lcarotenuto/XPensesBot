@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/TelegramBot.iml" filepath="$PROJECT_DIR$/.idea/TelegramBot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/XPensesBot.iml" filepath="$PROJECT_DIR$/.idea/XPensesBot.iml" />
     </modules>
   </component>
 </project>
