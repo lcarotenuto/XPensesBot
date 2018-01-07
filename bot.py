@@ -1,9 +1,9 @@
-import json
 import os
 import httplib2
 import pycountry
 import locale
 from datetime import datetime
+from config import *
 
 from apiclient import discovery
 from oauth2client import client
@@ -23,16 +23,16 @@ def get_credentials():
     Returns:
         Credentials, the obtained credential.
     """
-    client_secret_path = config['VARS']['CLIENT_SECRET_PATH']
-    scopes = config['VARS']['SCOPES']
-    application_name = config['VARS']['APPLICATION_NAME']
+    client_secret_path = VARS['CLIENT_SECRET_PATH']
+    scopes = VARS['SCOPES']
+    application_name = VARS['APPLICATION_NAME']
 
     current_dir = os.getcwd()
     credential_dir = os.path.join(current_dir, '.credentials')
     if not os.path.exists(credential_dir):
         os.makedirs(credential_dir)
 
-    credentials_filename = config['CONSTANTS']['CREDENTIALS_FILENAME']
+    credentials_filename = CONSTANTS['CREDENTIALS_FILENAME']
     credential_path = os.path.join(credential_dir, credentials_filename)
     store = Storage(credential_path)
     credentials = store.get()
@@ -65,10 +65,9 @@ def get_date():
 def main():
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
-    discovery_url = config['VARS']['DISCOVERY_URL']
+    discovery_url = VARS['DISCOVERY_URL']
     service = discovery.build('sheets', 'v4', http=http, discoveryServiceUrl=discovery_url)
 
-    spreadsheet_id = '1UU0fr7jpVrW6d5YQWLOwfYgtim5AN090Tjhfp9lljPs'
 
     day, month = get_date()
     range_name = "{0}!A2:C2".format(month)
@@ -88,6 +87,4 @@ def main():
 
 
 if __name__ == '__main__':
-    with open("config.json", "r") as f:
-        config = json.load(f)
     main()
