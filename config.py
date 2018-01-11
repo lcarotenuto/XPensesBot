@@ -6,5 +6,6 @@ VARS = {
 }
 CONSTANTS = {
     'CREDENTIALS_FILENAME': 'sheets.googleapis.com-python-quickstart.json',
-    'LOCALE': 'it'
+    'LOCALE': 'it',
+    'SPREADSHEET_ID': '1UU0fr7jpVrW6d5YQWLOwfYgtim5AN090Tjhfp9lljPs'
 }
