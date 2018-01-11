@@ -19,28 +19,27 @@ class GDocument:
         Returns:
             Credentials, the obtained credential.
         """
-        if not self.credentials:
-            client_secret_path = VARS['CLIENT_SECRET_PATH']
-            scopes = VARS['SCOPES']
-            application_name = VARS['APPLICATION_NAME']
+        client_secret_path = VARS['CLIENT_SECRET_PATH']
+        scopes = VARS['SCOPES']
+        application_name = VARS['APPLICATION_NAME']
 
-            current_dir = os.getcwd()
-            credential_dir = os.path.join(current_dir, '.credentials')
-            if not os.path.exists(credential_dir):
-                os.makedirs(credential_dir)
+        current_dir = os.getcwd()
+        credential_dir = os.path.join(current_dir, '.credentials')
+        if not os.path.exists(credential_dir):
+            os.makedirs(credential_dir)
 
-            credentials_filename = CONSTANTS['CREDENTIALS_FILENAME']
-            credential_path = os.path.join(credential_dir, credentials_filename)
-            store = Storage(credential_path)
-            creds = store.get()
-            if not creds or creds.invalid:
-                flow = client.flow_from_clientsecrets(client_secret_path, scopes)
-                flow.user_agent = application_name
-                creds = tools.run_flow(flow, store)
+        credentials_filename = CONSTANTS['CREDENTIALS_FILENAME']
+        credential_path = os.path.join(credential_dir, credentials_filename)
+        store = Storage(credential_path)
+        creds = store.get()
+        if not creds or creds.invalid:
+            flow = client.flow_from_clientsecrets(client_secret_path, scopes)
+            flow.user_agent = application_name
+            creds = tools.run_flow(flow, store)
 
-                print("Storing credentials {0} to {1}".format(creds, credential_path))
+            print("Storing credentials {0} to {1}".format(creds, credential_path))
 
-            self.credentials = creds
+        self.credentials = creds
 
         return self.credentials
 
