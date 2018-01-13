@@ -9,3 +9,7 @@ CONSTANTS = {
     'LOCALE': 'it',
     'SPREADSHEET_ID': '1UU0fr7jpVrW6d5YQWLOwfYgtim5AN090Tjhfp9lljPs'
 }
+SERVER = {
+    'HOSTNAME': 'localhost',
+    'PORT': 8080
+}
